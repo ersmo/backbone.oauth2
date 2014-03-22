@@ -15,7 +15,7 @@ Usage
 
 ```coffeescript
 config =
-  baseUrl: 'http://api.e-research-solutions.com'
+  baseUrl: 'http://example.com'
   clientId: 1
 
 # make sure baseUrl + '/account/me' and baseUrl + '/oauth/refresh_token' working
