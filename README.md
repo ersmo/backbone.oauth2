@@ -13,7 +13,7 @@ Installation
 Usage
 -----
 
-```javascript
+```coffeescript
 config =
   baseUrl: 'http://api.e-research-solutions.com'
   clientId: 1
