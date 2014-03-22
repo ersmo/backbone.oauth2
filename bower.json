@@ -1,0 +1,28 @@
+{
+  "name": "backbone.oauth2",
+  "version": "0.1.0",
+  "homepage": "https://github.com/ersmo/backbone.oauth2",
+  "description": "better support oauth2 for backbone",
+  "main": "backbone.oauth2.coffee",
+  "keywords": [
+    "backbone",
+    "oauth2",
+    "access_token"
+  ],
+  "authors": [
+    "fanlia@outlook.com"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "*",
+    "jquery": "*"
+  }  
+}
