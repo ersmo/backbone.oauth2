@@ -3,7 +3,7 @@ do ($, Backbone, _) ->
     parseUrl = (url) ->
       a = document.createElement 'a'
       a.href = url
-      a   
+      a
 
     class Router extends Backbone.Router
 
@@ -29,7 +29,7 @@ do ($, Backbone, _) ->
         @listenTo @router, 'checkin', @checkin
         @listenTo @router, 'login', @login
         @listenTo @router, 'logout', @logout
-        
+
       login: (access_token) ->
         return @logout() unless access_token
         me = this
@@ -72,18 +72,18 @@ do ($, Backbone, _) ->
 
         $.ajaxPrefilter (options, originalOptions, jqXHR) ->
           return unless options.access_token
-          me.trigger 'checkin', (access_token) -> options.url = me.getUrl options.url, {access_token}    
+          me.trigger 'checkin', (access_token) -> options.url = me.getUrl options.url, {access_token}
 
         Backbone.syncAlias = Backbone.sync
         Backbone.sync = (method, model, options) ->
           options.access_token = model.access_token
-          Backbone.syncAlias.call(this, method, model, options)        
+          Backbone.syncAlias.call(this, method, model, options)
 
 
     Backbone.oauth2 = (oauth2) ->
 
       oauth2 ?=
-        baseUrl: 'http://api.e-research-solutions.com'
+        baseUrl: 'http://example.com'
         clientId: 1
 
       meUrl = oauth2.baseUrl + '/account/me'
