@@ -25,19 +25,19 @@ me = Backbone.oauth2 config
 
 class Test extends Backbone.Model
 
-  # add access_token: true shall automaticall add access_token to url when fech
+  # add access_token: true shall automaticall add access_token to url when fetch
   access_token: true
 
   url: -> 'http://example.com'
 
 class TestCollection extends Backbone.Collection
 
-  # add access_token: true shall automaticall add access_token to url when fech
+  # add access_token: true shall automaticall add access_token to url when fetch
   access_token: true
 
   url: -> 'http://example.com'
 
-# passing access_token: true shall automaticall add access_token to url when fech
+# passing access_token: true shall automaticall add access_token to url when fetch
 $.ajax
   access_token: true
   url: 'http://example.com'
