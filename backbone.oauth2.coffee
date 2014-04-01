@@ -13,6 +13,7 @@ do ($, Backbone, _) ->
 
       login: (access_token) ->
         access_token = @extractToken access_token
+        location.hash = ''
         @trigger 'login', access_token
 
       logout: ->
