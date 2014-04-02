@@ -47,6 +47,7 @@ do ($, Backbone, _) ->
           location.href = "#{base_url}/oauth/logout?#{querystring}"
 
       refresh: (access_token) ->
+        @reload()
         me = this
         @trigger 'refresh', (refresh_url) ->
           $.ajax
@@ -67,6 +68,9 @@ do ($, Backbone, _) ->
 
       go: (hash) ->
         @router.navigate hash, trigger: true
+
+      reload: ->
+        Backbone.history.loadUrl Backbone.history.getHash()
 
       registerAccessToken: ->
         me = this
