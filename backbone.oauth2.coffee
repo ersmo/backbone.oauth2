@@ -42,7 +42,7 @@ do ($, Backbone, _) ->
 
       logout: ->
         @trigger 'logout', (client_id, base_url) ->
-          redirect_uri = "#{document.location.protocol}//#{document.location.host}"
+          redirect_uri = document.location.href.match(/(^[^#]*)/)[0]
           querystring = $.param {client_id, redirect_uri}
           location.href = "#{base_url}/oauth/logout?#{querystring}"
 
