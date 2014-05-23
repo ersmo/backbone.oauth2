@@ -36,7 +36,10 @@ do ($, Backbone, _) ->
         me = this
         @trigger 'login', access_token, (meUrl) ->
           me.url = me.getUrl meUrl, {access_token}
-          success = -> me.refresh access_token
+          success = ->
+            Backbone.history.stop()
+            me.trigger 'me:login', me
+            me.refresh access_token
           error = -> me.logout()
           me.fetch {success, error}
 
@@ -57,6 +60,7 @@ do ($, Backbone, _) ->
 
       checkin: ->
         me = this
+        Backbone.history.start()
         hash = Backbone.history.getHash()
         return if flag = /^access_token=/.test(hash) or hash is 'logout'
         @trigger 'checkin', (access_token) -> me.login access_token
