@@ -13,7 +13,6 @@ do ($, Backbone, _) ->
 
       login: (access_token) ->
         access_token = @extractToken access_token
-        location.hash = ''
         @trigger 'login', access_token
 
       logout: ->
@@ -32,25 +31,28 @@ do ($, Backbone, _) ->
         @listenTo @router, 'logout', @logout
 
       login: (access_token) ->
-        return @logout() unless access_token
         me = this
         @trigger 'login', access_token, (meUrl) ->
           me.url = me.getUrl meUrl, {access_token}
           success = ->
-            Backbone.history.stop()
-            me.trigger 'me:login', me
-            me.refresh access_token
+            me.trigger 'me:login', me, (hash) ->
+              me.triggerHash hash or me.coming_hash or ''
+              me.refresh access_token
           error = -> me.logout()
           me.fetch {success, error}
 
       logout: ->
+        me = this
         @trigger 'logout', (client_id, base_url) ->
           redirect_uri = document.location.href.match(/(^[^#]*)/)[0]
           querystring = $.param {client_id, redirect_uri}
-          location.href = "#{base_url}/oauth/logout?#{querystring}"
+          if me._events['me:logout']
+            me.trigger 'me:logout', ->
+              location.href = "#{base_url}/oauth/logout?#{querystring}"
+          else
+            location.href = "#{base_url}/oauth/logout?#{querystring}"
 
       refresh: (access_token) ->
-        @reload()
         me = this
         @trigger 'refresh', (refresh_url) ->
           $.ajax
@@ -63,6 +65,7 @@ do ($, Backbone, _) ->
         Backbone.history.start()
         hash = Backbone.history.getHash()
         return if flag = /^access_token=/.test(hash) or hash is 'logout'
+        @coming_hash = hash
         @trigger 'checkin', (access_token) -> me.login access_token
 
       getUrl: (baseUrl = '', param = {}) ->
@@ -72,6 +75,11 @@ do ($, Backbone, _) ->
 
       go: (hash) ->
         @router.navigate hash, trigger: true
+
+      triggerHash: (hash) ->
+        current_hash = Backbone.history.getHash()
+        return @go hash if current_hash isnt hash
+        Backbone.history.loadUrl hash
 
       reload: ->
         Backbone.history.loadUrl Backbone.history.getHash()
