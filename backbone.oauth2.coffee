@@ -32,11 +32,14 @@ do ($, Backbone, _) ->
 
       login: (access_token) ->
         me = this
+        return me.logout() unless access_token
         @trigger 'login', access_token, (meUrl) ->
           me.url = me.getUrl meUrl, {access_token}
           success = ->
+            coming_hash = localStorage.getItem 'coming_hash'
+            localStorage.removeItem 'coming_hash'
             me.trigger 'me:login', me, (hash) ->
-              me.triggerHash hash or me.coming_hash or ''
+              me.triggerHash hash or me.coming_hash or coming_hash or ''
               me.refresh access_token
           error = -> me.logout()
           me.fetch {success, error}
@@ -66,6 +69,8 @@ do ($, Backbone, _) ->
         hash = Backbone.history.getHash()
         return if flag = /^access_token=/.test(hash) or hash is 'logout'
         @coming_hash = hash
+        # set coming_hash
+        localStorage.setItem 'coming_hash', @coming_hash
         @trigger 'checkin', (access_token) -> me.login access_token
 
       getUrl: (baseUrl = '', param = {}) ->
