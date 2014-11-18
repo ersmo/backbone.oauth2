@@ -46,14 +46,16 @@ do ($, Backbone, _) ->
 
       logout: ->
         me = this
-        @trigger 'logout', (client_id, base_url) ->
+        @trigger 'logout', (client_id, base_url, local) ->
           redirect_uri = document.location.href.match(/(^[^#]*)/)[0]
           querystring = $.param {client_id, redirect_uri}
+          @coming_hash = Backbone.history.getHash() if local
           if me._events['me:logout']
             me.trigger 'me:logout', ->
-              location.href = "#{base_url}/oauth/logout?#{querystring}"
+              location.href = "#{base_url}/oauth/logout?#{querystring}" unless local
+
           else
-            location.href = "#{base_url}/oauth/logout?#{querystring}"
+            location.href = "#{base_url}/oauth/logout?#{querystring}" unless local
 
       refresh: (access_token) ->
         me = this
@@ -107,6 +109,7 @@ do ($, Backbone, _) ->
       oauth2 ?=
         baseUrl: 'http://example.com'
         clientId: 1
+        local: false
 
       meUrl = oauth2.baseUrl + '/account/me'
       refreshUrl = oauth2.baseUrl + '/oauth/refresh_token'
@@ -126,6 +129,6 @@ do ($, Backbone, _) ->
 
       me.on 'logout', (next) ->
         localStorage.removeItem 'access_token'
-        next oauth2.clientId, oauth2.baseUrl
+        next oauth2.clientId, oauth2.baseUrl, oauth2.local
 
       me
