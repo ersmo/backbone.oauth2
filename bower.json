@@ -1,6 +1,6 @@
 {
   "name": "backbone.oauth2",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "homepage": "https://github.com/ersmo/backbone.oauth2",
   "description": "better support oauth2 for backbone",
   "main": "backbone.oauth2.coffee",
